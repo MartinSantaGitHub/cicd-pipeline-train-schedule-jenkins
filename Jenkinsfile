@@ -26,12 +26,23 @@ pipeline {
             }
         }
 
-        stage('Clear npm cache') {
+        stage('Fix missing libraries') {
+            steps {
+                sh '''
+                brew reinstall icu4c
+                brew link --overwrite node@20
+                node -v
+                npm -v
+                '''
+            }
+        }
+
+        stage('Clear NPM cache') {
             steps {
                 sh 'npm cache clean --force'
             }
         }
-        
+
         stage('Install dependencies') {
             steps {
                 sh './gradlew npmInstall'
