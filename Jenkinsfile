@@ -8,35 +8,43 @@ pipeline {
             }
         }
 
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Build with Gradle Wrapper') {
             steps {
                 sh './gradlew clean build'
             }
         }
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-        stage('Node.js setup') {
+        stage('Node.js Setup') {
             steps {
                 sh './gradlew nodeSetup'
             }
         }
-        stage('Install dependencies') {
+
+        stage('Install Node Dependencies') {
             steps {
                 sh './gradlew npmInstall'
             }
         }
 
-        stage('Build') {
+        stage('Build with npm') {
             steps {
-                sh './gradlew build'
+                sh './gradlew npmBuild'
             }
         }
 
-        stage('Zip') {
+        stage('Run Tests with npm') {
+            steps {
+                sh './gradlew npmTest'
+            }
+        }
+
+        stage('Create Zip') {
             steps {
                 sh './gradlew zip'
             }
@@ -45,7 +53,7 @@ pipeline {
         stage('Archive Artifacts') {
             steps {
                 // Archive the zip file after it is generated
-                archiveArtifacts artifacts: 'dist/trainSchedule.zip', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'build/dist/trainSchedule.zip', allowEmptyArchive: true
             }
         }
     }

@@ -1,60 +1,39 @@
 plugins {
-    id 'com.github.node-gradle.node' version '4.0.0'
-}
-
-repositories {
-    // Add this line to ensure the plugin repository is included
-    maven { url 'https://plugins.gradle.org/m2/' }
-    // Other repositories you may need, like jcenter or mavenCentral
-    mavenCentral()
+    id 'com.github.node-gradle.node' version '5.0.0' // Updated plugin
 }
 
 node {
-    version = '18.17.0'  // Or any other supported version >=18.17.0
-    npmVersion = '10.5.0'
+    version = '18.17.0'  // Use a version compatible with npm
+    npmVersion = '8.1.0'
     download = true
 }
 
-// Declare a clean task to delete the build directory
-task clean(type: Delete) {
-    delete rootProject.buildDir
+// Declare npm-related tasks
+task npmInstall(type: Exec) {
+    commandLine 'npm', 'install'
 }
 
-// Task to run npm tests
-task npm_test(type: NpmTask) {
-    args = ['test']
+task npmBuild(type: Exec) {
     dependsOn npmInstall
+    commandLine 'npm', 'run', 'build'
 }
 
-// Task to build the project (e.g., npm run build)
-task npm_build(type: NpmTask) {
-    args = ['run', 'build']
-    dependsOn npmInstall
+task npmTest(type: Exec) {
+    dependsOn npmBuild
+    commandLine 'npm', 'test'
 }
 
+// Declare a task to create a zip of the app
 task zip(type: Zip) {
-	doFirst {
-        def distDir = file("dist")
-
-        if (!distDir.exists()) {
-            distDir.mkdirs()
-        }
+    dependsOn npmBuild
+    from('.') {
+        include '**/*'
     }
-
-    from ('.') {
-        include "*"
-        include "bin/**"
-        include "data/**"
-        include "node_modules/**"
-        include "public/**"
-        include "routes/**"
-        include "views/**"
-    }
-    destinationDirectory = file("dist")
-    archiveFileName = "trainSchedule.zip"
+    destinationDirectory = file("${buildDir}/dist")  // Corrected path
+    archiveFileName = 'trainSchedule.zip'  // Corrected base name
 }
 
-// Define task dependencies
-zip.dependsOn npm_build
-npm_build.dependsOn npm_test
-npm_test.dependsOn npmInstall
+// Declare task dependencies
+zip.finalizedBy {
+    archiveArtifacts artifacts: "build/dist/trainSchedule.zip", followSymlinks: false
+}
