@@ -13,7 +13,7 @@ pipeline {
                 sh './gradlew clean build'
             }
         }
-        
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -32,6 +32,13 @@ pipeline {
         stage('Build') {
             steps {
                 sh './gradlew build'
+            }
+        }
+
+        stage('Archive Artifacts') {
+            steps {
+                // Archive the zip file after it is generated
+                archiveArtifacts artifacts: 'dist/trainSchedule.zip', allowEmptyArchive: true
             }
         }
     }
