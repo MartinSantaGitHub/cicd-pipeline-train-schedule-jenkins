@@ -8,27 +8,40 @@ node {
     download = true
 }
 
-//declare a build task
-task build
-
-//declare a task to create a zip of the app
-task zip(type: Zip) {
-	from ('.') {
-		include "*"
-		include "bin/**"
-		include "data/**"
-		include "node_modules/**"
-		include "public/**"
-		include "routes/**"
-		include "views/**"
-	}
-	destinationDir(file("dist"))
-	baseName "trainSchedule"
+// Task to install npm dependencies
+task npmInstall(type: NpmTask) {
+    args = ['install']
 }
 
-//declare task dependencies
+// Task to run npm tests
+task npm_test(type: NpmTask) {
+    args = ['test']
+    dependsOn npmInstall
+}
+
+// Task to build the project (e.g., npm run build)
+task npm_build(type: NpmTask) {
+    args = ['run', 'build']
+    dependsOn npmInstall
+}
+
+// Task to create a zip of the app
+task zip(type: Zip) {
+    from ('.') {
+        include "*"
+        include "bin/**"
+        include "data/**"
+        include "node_modules/**"
+        include "public/**"
+        include "routes/**"
+        include "views/**"
+    }
+    destinationDir(file("dist"))
+    baseName = "trainSchedule"
+}
+
+// Define task dependencies
 build.dependsOn zip
 zip.dependsOn npm_build
 npm_build.dependsOn npm_test
 npm_test.dependsOn npmInstall
-npm_build.dependsOn npmInstall

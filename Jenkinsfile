@@ -7,6 +7,12 @@ pipeline {
                 sh './gradlew --version'
             }
         }
+
+        stage('Build with Gradle Wrapper') {
+            steps {
+                sh './gradlew clean build'
+            }
+        }
         
         stage('Checkout') {
             steps {
