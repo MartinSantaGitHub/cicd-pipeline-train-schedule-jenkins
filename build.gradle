@@ -8,6 +8,10 @@ node {
     download = true
 }
 
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
 task npmBuild(type: Exec) {
     dependsOn npmInstall
     commandLine 'npm', 'run', 'build'
