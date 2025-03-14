@@ -8,6 +8,11 @@ node {
     download = true
 }
 
+// Declare the build task
+task build {
+    dependsOn zip  // Ensure zip task runs as part of the build
+}
+
 // Task to run npm tests
 task npm_test(type: NpmTask) {
     args = ['test']
@@ -32,11 +37,10 @@ task zip(type: Zip) {
         include "views/**"
     }
     destinationDirectory = file("dist")  
-    archiveBaseName = "trainSchedule"  
+    archiveBaseName = "trainSchedule"
 }
 
 // Define task dependencies
-build.dependsOn zip
 zip.dependsOn npm_build
 npm_build.dependsOn npm_test
 npm_test.dependsOn npmInstall
