@@ -8,11 +8,6 @@ node {
     download = true
 }
 
-// Declare npm-related tasks
-task npmInstall(type: Exec) {
-    commandLine 'npm', 'install'
-}
-
 task npmBuild(type: Exec) {
     dependsOn npmInstall
     commandLine 'npm', 'run', 'build'
