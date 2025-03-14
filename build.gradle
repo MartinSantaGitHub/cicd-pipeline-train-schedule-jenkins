@@ -3,9 +3,14 @@ plugins {
 }
 
 node {
-    version = '16.13.0' 
+    version = '16.13.0'
     npmVersion = '8.1.0'
     download = true
+}
+
+// Declare a clean task to delete the build directory
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 // Task to run npm tests
@@ -31,7 +36,7 @@ task zip(type: Zip) {
         include "routes/**"
         include "views/**"
     }
-    destinationDirectory = file("dist")  
+    destinationDirectory = file("dist")
     archiveBaseName = "trainSchedule"
 }
 
