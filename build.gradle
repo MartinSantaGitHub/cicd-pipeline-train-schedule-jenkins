@@ -8,14 +8,6 @@ node {
     download = true
 }
 
-task cleanNpmCache {
-    doLast {
-        exec {
-            commandLine 'npm', 'cache', 'clean', '--force'
-        }
-    }
-}
-
 // Declare a clean task to delete the build directory
 task clean(type: Delete) {
     delete rootProject.buildDir
@@ -52,7 +44,6 @@ task zip(type: Zip) {
 
 
 // Define task dependencies
-npmInstall.dependsOn cleanNpmCache
 zip.dependsOn npm_build
 npm_build.dependsOn npm_test
 npm_test.dependsOn npmInstall
