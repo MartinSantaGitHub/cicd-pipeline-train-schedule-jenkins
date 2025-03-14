@@ -3,8 +3,8 @@ plugins {
 }
 
 node {
-    version = '16.14.0'  // Use a newer version
-    npmVersion = '8.3.0'  // Update npm version to a compatible version
+    version = '16.13.0'
+    npmVersion = '8.1.0'
     download = true
 }
 
