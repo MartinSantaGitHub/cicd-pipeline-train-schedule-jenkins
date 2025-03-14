@@ -8,11 +8,6 @@ node {
     download = true
 }
 
-// Declare the build task
-task build {
-    dependsOn zip  // Ensure zip task runs as part of the build
-}
-
 // Task to run npm tests
 task npm_test(type: NpmTask) {
     args = ['test']
