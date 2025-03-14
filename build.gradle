@@ -26,9 +26,6 @@ task npm_build(type: NpmTask) {
 }
 
 task zip(type: Zip) {
-    doLast {
-        println "Running the zip task"
-    }
     from ('.') {
         include "*"
         include "bin/**"
@@ -38,10 +35,18 @@ task zip(type: Zip) {
         include "routes/**"
         include "views/**"
     }
-    destinationDirectory = file("dist")
-    archiveBaseName = "trainSchedule"
-}
+    destinationDir = file("dist")  // Ensure it goes to the dist directory
+    baseName = "trainSchedule"     // Set the name of the zip file
 
+    // Ensure dist folder is created before the zip task runs
+    doFirst {
+        file("dist").mkdirs()
+    }
+
+    doLast {
+        println "Zipped content located at ${destinationDir}/trainSchedule.zip"
+    }
+}
 
 // Define task dependencies
 zip.dependsOn npm_build
