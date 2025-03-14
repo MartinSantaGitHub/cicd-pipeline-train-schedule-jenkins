@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        stage('Check Gradle Version') {
+            steps {
+                sh './gradlew --version'
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 checkout scm
