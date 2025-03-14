@@ -26,12 +26,6 @@ pipeline {
             }
         }
 
-        stage('Install Node Dependencies') {
-            steps {
-                sh './gradlew npmInstall'
-            }
-        }
-
         stage('Build with npm') {
             steps {
                 sh './gradlew npmBuild'
