@@ -19,16 +19,25 @@ pipeline {
                 checkout scm
             }
         }
+
+        stage('Clear npm cache') {
+            steps {
+                sh 'npm cache clean --force'
+            }
+        }
+
         stage('Node.js setup') {
             steps {
                 sh './gradlew nodeSetup'
             }
         }
+
         stage('Install dependencies') {
             steps {
                 sh './gradlew npmInstall'
             }
         }
+        
         stage('Build') {
             steps {
                 sh './gradlew build'
