@@ -8,11 +8,6 @@ node {
     download = true
 }
 
-// Task to install npm dependencies
-task npmInstall(type: NpmTask) {
-    args = ['install']
-}
-
 // Task to run npm tests
 task npm_test(type: NpmTask) {
     args = ['test']
