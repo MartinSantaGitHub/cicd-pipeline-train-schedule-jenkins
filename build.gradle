@@ -36,7 +36,7 @@ task zip(type: Zip) {
         include "views/**"
     }
     destinationDirectory = file("dist")
-    archiveBaseName = "trainSchedule"
+    archiveFileName = "trainSchedule.zip"
 
     // Ensure dist folder is created before the zip task runs
     doFirst {
