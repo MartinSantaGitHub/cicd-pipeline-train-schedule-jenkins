@@ -32,7 +32,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh './gradlew build' && sh './gradlew zip'
+                sh './gradlew build'
+            }
+        }
+
+        stage('Zip') {
+            steps {
+                sh './gradlew zip'
             }
         }
 
