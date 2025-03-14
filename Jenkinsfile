@@ -29,11 +29,14 @@ pipeline {
                 sh './gradlew npmInstall'
             }
         }
+        
         stage('Build') {
-            script {
+            steps {
+                script {
                     // Run Gradle build tasks
                     sh './gradlew build' && sh './gradlew zip'
                 }
+            }
         }
 
         stage('Archive Artifacts') {
