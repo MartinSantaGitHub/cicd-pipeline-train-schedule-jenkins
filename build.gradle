@@ -1,9 +1,9 @@
 plugins {
-    id 'com.github.node-gradle.node' version '5.0.0'
+    id 'com.github.node-gradle.node'
 }
 
 node {
-    version = '18.17.0'
+    version = '16.13.0'
     npmVersion = '8.1.0'
     download = false
 }
