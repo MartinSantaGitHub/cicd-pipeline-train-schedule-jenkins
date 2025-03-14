@@ -28,7 +28,7 @@ task npm_build(type: NpmTask) {
 task zip(type: Zip) {
 	doFirst {
         def distDir = file("dist")
-		
+
         if (!distDir.exists()) {
             distDir.mkdirs()
         }

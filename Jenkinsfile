@@ -30,9 +30,10 @@ pipeline {
             }
         }
         stage('Build') {
-            steps {
-                sh './gradlew build'
-            }
+            script {
+                    // Run Gradle build tasks
+                    sh './gradlew build' && sh './gradlew zip'
+                }
         }
 
         stage('Archive Artifacts') {
