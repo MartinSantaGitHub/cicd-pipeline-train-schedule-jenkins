@@ -10,9 +10,9 @@ repositories {
 }
 
 node {
-    version = '16.13.0'
-    npmVersion = '8.1.0'
-    download = false
+    version = '18.17.0'  // Or any other supported version >=18.17.0
+    npmVersion = '10.5.0'
+    download = true
 }
 
 // Declare a clean task to delete the build directory
