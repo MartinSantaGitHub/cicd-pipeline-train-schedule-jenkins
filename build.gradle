@@ -3,9 +3,9 @@ plugins {
 }
 
 node {
-    version = '23.9.0'
+    version = '22.14.0'
     npmVersion = '8.1.0'
-    download = true
+    download = false
 }
 
 // Declare a clean task to delete the build directory
