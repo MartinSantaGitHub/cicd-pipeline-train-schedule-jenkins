@@ -32,12 +32,6 @@ pipeline {
             }
         }
 
-        stage('Install dependencies') {
-            steps {
-                sh './gradlew npmInstall'
-            }
-        }
-        
         stage('Build') {
             steps {
                 sh './gradlew build'
