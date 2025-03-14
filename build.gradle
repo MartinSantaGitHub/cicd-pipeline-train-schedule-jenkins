@@ -1,38 +1,54 @@
 plugins {
-    id 'com.github.node-gradle.node' version '5.0.0' // Updated plugin
+    id 'com.github.node-gradle.node' version '5.0.0'
 }
 
 node {
-    version = '16.20.2'  // Use a version compatible with npm
-    npmVersion = '8.19.4'
+    version = '16.13.0'
+    npmVersion = '8.1.0'
     download = false
 }
 
+// Declare a clean task to delete the build directory
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-task npmBuild(type: Exec) {
+// Task to run npm tests
+task npm_test(type: NpmTask) {
+    args = ['test']
     dependsOn npmInstall
-    commandLine 'npm', 'run', 'build'
 }
 
-task npmTest(type: Exec) {
-    dependsOn npmBuild
-    commandLine 'npm', 'test'
+// Task to build the project (e.g., npm run build)
+task npm_build(type: NpmTask) {
+    args = ['run', 'build']
+    dependsOn npmInstall
 }
 
-// Declare a task to create a zip of the app
 task zip(type: Zip) {
-    dependsOn npmBuild
-    from('.') {
-        include '**/*'
+    from ('.') {
+        include "*"
+        include "bin/**"
+        include "data/**"
+        include "node_modules/**"
+        include "public/**"
+        include "routes/**"
+        include "views/**"
     }
-    destinationDirectory = file("${buildDir}/dist")  // Corrected path
-    archiveFileName = 'trainSchedule.zip'  // Corrected base name
+    destinationDirectory = file("dist")  // Correct property for output directory
+    archiveFileName = "trainSchedule.zip"
+
+    // Ensure dist folder is created before the zip task runs
+    doFirst {
+        file("dist").mkdirs()
+    }
+
+    doLast {
+        println "Zipped content located at ${destinationDir}/trainSchedule.zip"
+    }
 }
 
-// Declare task dependencies
-zip.finalizedBy {
-    archiveArtifacts artifacts: "build/dist/trainSchedule.zip", followSymlinks: false
-}
+// Define task dependencies
+zip.dependsOn npm_build
+npm_build.dependsOn npm_test
+npm_test.dependsOn npmInstall

@@ -8,42 +8,33 @@ pipeline {
             }
         }
 
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Build with Gradle Wrapper') {
             steps {
                 sh './gradlew clean build'
             }
         }
 
-        stage('Node.js Setup') {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Node.js setup') {
             steps {
                 sh './gradlew nodeSetup'
             }
         }
-
-        stage('Install Node Dependencies') {
+        stage('Install dependencies') {
             steps {
                 sh './gradlew npmInstall'
             }
         }
-
-        stage('Build with npm') {
+        stage('Build') {
             steps {
-                sh './gradlew npmBuild'
+                sh './gradlew build'
             }
         }
-
-        stage('Run Tests with npm') {
-            steps {
-                sh './gradlew npmTest'
-            }
-        }
-
+        
         stage('Create Zip') {
             steps {
                 sh './gradlew zip'
