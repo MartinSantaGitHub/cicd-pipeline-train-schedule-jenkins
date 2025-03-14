@@ -5,7 +5,7 @@ plugins {
 node {
     version = '16.20.2'  // Use a version compatible with npm
     npmVersion = '8.19.4'
-    download = true
+    download = false
 }
 
 task clean(type: Delete) {
