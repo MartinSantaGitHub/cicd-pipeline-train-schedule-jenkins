@@ -3,9 +3,17 @@ plugins {
 }
 
 node {
-    version = '16.13.0'
-    npmVersion = '8.1.0'
+    version = '16.14.0'  // Use a newer version
+    npmVersion = '8.3.0'  // Update npm version to a compatible version
     download = true
+}
+
+task cleanNpmCache {
+    doLast {
+        exec {
+            commandLine 'npm', 'cache', 'clean', '--force'
+        }
+    }
 }
 
 // Declare a clean task to delete the build directory
@@ -44,6 +52,7 @@ task zip(type: Zip) {
 
 
 // Define task dependencies
+npmInstall.dependsOn cleanNpmCache
 zip.dependsOn npm_build
 npm_build.dependsOn npm_test
 npm_test.dependsOn npmInstall
