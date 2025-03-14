@@ -29,13 +29,10 @@ pipeline {
                 sh './gradlew npmInstall'
             }
         }
-        
+
         stage('Build') {
             steps {
-                script {
-                    // Run Gradle build tasks
-                    sh './gradlew build' && sh './gradlew zip'
-                }
+                sh './gradlew build' && sh './gradlew zip'
             }
         }
 
