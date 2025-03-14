@@ -25,8 +25,10 @@ task npm_build(type: NpmTask) {
     dependsOn npmInstall
 }
 
-// Task to create a zip of the app
 task zip(type: Zip) {
+    doLast {
+        println "Running the zip task"
+    }
     from ('.') {
         include "*"
         include "bin/**"
@@ -36,8 +38,10 @@ task zip(type: Zip) {
         include "routes/**"
         include "views/**"
     }
-    archiveArtifacts artifacts: 'dist/trainSchedule.zip', followSymlinks: false
+    destinationDirectory = file("$buildDir/dist")
+    archiveBaseName = "trainSchedule"
 }
+
 
 // Define task dependencies
 zip.dependsOn npm_build
